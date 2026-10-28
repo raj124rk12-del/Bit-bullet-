@@ -1,0 +1,38 @@
+echo "# Bit-bullet-" >> README.md
+git init
+git add README.md
+git commit -m "first name: Build BIRBULL APK
+on:
+  push:
+    branches: [ main, master ]
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python 3.10
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Install dependencies
+        run: |
+          sudo apt update
+          sudo apt install -y openjdk-17-jdk python3-pip zip unzip autoconf libtool pkg-config zlib1g-dev libncurses5-dev libncursesw5-dev libtinfo5 cmake libffi-dev libssl-dev
+          pip install --upgrade pip
+          pip install buildozer cython==0.29.33
+
+      - name: Build APK
+        run: |
+          buildozer android debug
+          
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: BIRBULL-APK
+          path: bin/*.apkcommit"
+git branch -M main
+git remote add origin https://github.com/raj124rk12-del/Bit-bullet-.git
+git push -u origin main
